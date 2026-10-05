@@ -1,196 +1,360 @@
-const weddingDate = new Date('2027-01-09T14:00:00-05:00');
+// =====================================================
+// WALTER & DAYERLIN
+// SCRIPT PRINCIPAL
+// =====================================================
+
+
+// =====================================================
+// CUENTA REGRESIVA
+// =====================================================
+
+const weddingDate =
+  new Date('2027-01-09T14:00:00-05:00');
+
 
 function tick() {
-  const now = new Date();
-  let d = Math.max(0, weddingDate - now);
 
-  const days = Math.floor(d / 86400000);
+  const now = new Date();
+
+  let d =
+    Math.max(
+      0,
+      weddingDate - now
+    );
+
+
+  const days =
+    Math.floor(
+      d / 86400000
+    );
+
   d %= 86400000;
 
-  const hours = Math.floor(d / 3600000);
+
+  const hours =
+    Math.floor(
+      d / 3600000
+    );
+
   d %= 3600000;
 
-  const minutes = Math.floor(d / 60000);
-  const seconds = Math.floor((d % 60000) / 1000);
 
-  [
+  const minutes =
+    Math.floor(
+      d / 60000
+    );
+
+
+  const seconds =
+    Math.floor(
+      (d % 60000) / 1000
+    );
+
+
+  const values = [
     ['days', days],
     ['hours', hours],
     ['minutes', minutes],
     ['seconds', seconds]
-  ].forEach(([id, value]) => {
-    const el = document.getElementById(id);
+  ];
 
-    if (el) {
-      el.textContent = String(value).padStart(2, '0');
+
+  values.forEach(
+    ([id, value]) => {
+
+      const element =
+        document.getElementById(id);
+
+      if (element) {
+
+        element.textContent =
+          String(value)
+            .padStart(2, '0');
+
+      }
+
     }
-  });
+  );
+
 }
 
+
 tick();
-setInterval(tick, 1000);
+
+setInterval(
+  tick,
+  1000
+);
 
 
-// ==========================================
+
+// =====================================================
 // MENÚ MÓVIL
-// ==========================================
+// =====================================================
 
-const menuBtn = document.querySelector('.menu-btn');
-const menu = document.querySelector('.menu');
+const menuBtn =
+  document.querySelector(
+    '.menu-btn'
+  );
+
+
+const menu =
+  document.querySelector(
+    '.menu'
+  );
+
 
 if (menuBtn && menu) {
 
-  menuBtn.addEventListener('click', () => {
+  menuBtn.addEventListener(
+    'click',
+    () => {
 
-    const open = menu.classList.toggle('open');
+      const open =
+        menu.classList.toggle(
+          'open'
+        );
 
-    menuBtn.setAttribute('aria-expanded', open);
 
-  });
+      menuBtn.setAttribute(
+        'aria-expanded',
+        open
+      );
 
-  menu.querySelectorAll('a').forEach(a => {
+    }
+  );
 
-    a.addEventListener('click', () => {
-      menu.classList.remove('open');
+
+  menu
+    .querySelectorAll('a')
+    .forEach(link => {
+
+      link.addEventListener(
+        'click',
+        () => {
+
+          menu.classList.remove(
+            'open'
+          );
+
+        }
+      );
+
     });
-
-  });
 
 }
 
 
-// ==========================================
+
+// =====================================================
 // ANIMACIONES
-// ==========================================
+// =====================================================
 
-const io = new IntersectionObserver(
+const observer =
+  new IntersectionObserver(
 
-  entries => entries.forEach(entry => {
+    entries => {
 
-    if (entry.isIntersecting) {
-      entry.target.classList.add('visible');
+      entries.forEach(entry => {
+
+        if (
+          entry.isIntersecting
+        ) {
+
+          entry.target
+            .classList
+            .add('visible');
+
+        }
+
+      });
+
+    },
+
+    {
+      threshold: 0.12
     }
 
-  }),
+  );
 
-  {
-    threshold: 0.12
-  }
-
-);
 
 document
   .querySelectorAll('.reveal')
-  .forEach(el => io.observe(el));
+  .forEach(element => {
+
+    observer.observe(element);
+
+  });
 
 
-// ==========================================
-// RSVP REAL
-// GOOGLE SHEETS + APPS SCRIPT
-// ==========================================
+
+// =====================================================
+// GOOGLE APPS SCRIPT
+// =====================================================
 
 const API_URL =
   'https://script.google.com/macros/s/AKfycbxrkAm4OFH26KCNLQj2BkSg5tNXGbpF6XnNY14qRGBUZQyCJKPPFs-S0MXK8ICb9Hfu/exec';
 
 
-// Elementos del formulario
 
-const code =
-  document.getElementById('inviteCode');
+// =====================================================
+// ELEMENTOS RSVP
+// =====================================================
 
-const lookup =
-  document.getElementById('lookupBtn');
+const inviteName =
+  document.getElementById(
+    'personalInviteName'
+  );
 
-const panel =
-  document.getElementById('invitePanel');
 
-const nameEl =
-  document.getElementById('inviteName');
+const inviteText =
+  document.getElementById(
+    'personalInviteText'
+  );
 
-const capEl =
-  document.getElementById('inviteCapacity');
 
-const count =
-  document.getElementById('guestCount');
+const rsvpForm =
+  document.getElementById(
+    'personalRsvpForm'
+  );
+
 
 const attendance =
-  document.getElementById('attendance');
+  document.getElementById(
+    'personalAttendance'
+  );
 
-const countWrap =
-  document.getElementById('guestCountWrap');
 
-const status =
-  document.getElementById('formStatus');
+const guestCountWrap =
+  document.getElementById(
+    'personalGuestCountWrap'
+  );
 
-const form =
-  document.getElementById('rsvpForm');
+
+const guestCount =
+  document.getElementById(
+    'personalGuestCount'
+  );
+
 
 const message =
-  document.getElementById('message');
+  document.getElementById(
+    'personalMessage'
+  );
+
+
+const rsvpStatus =
+  document.getElementById(
+    'personalRsvpStatus'
+  );
+
 
 
 let activeInvite = null;
 
 
-// ==========================================
-// MENSAJES DEL RSVP
-// ==========================================
+
+// =====================================================
+// MOSTRAR MENSAJE
+// =====================================================
 
 function showStatus(text) {
 
-  if (status) {
-    status.textContent = text;
+  if (rsvpStatus) {
+
+    rsvpStatus.textContent =
+      text;
+
   }
 
 }
 
 
-// ==========================================
-// BUSCAR INVITACIÓN
-// ==========================================
 
-async function loadInvite(rawCode) {
+// =====================================================
+// OBTENER CÓDIGO DEL LINK
+// =====================================================
 
-  const key =
-    String(rawCode || '')
-      .trim()
-      .toUpperCase();
+const params =
+  new URLSearchParams(
+    window.location.search
+  );
 
 
-  if (!key) {
+const inviteCode =
+  String(
+    params.get('i') || ''
+  )
+    .trim()
+    .toUpperCase();
 
-    if (panel) {
-      panel.hidden = true;
+
+
+// =====================================================
+// CARGAR INVITACIÓN
+// =====================================================
+
+async function loadInvitation() {
+
+
+  if (!inviteCode) {
+
+    if (inviteName) {
+
+      inviteName.textContent =
+        'Invitación personalizada';
+
     }
 
-    showStatus(
-      'No se encontró el código de esta invitación.'
-    );
+
+    if (inviteText) {
+
+      inviteText.textContent =
+        'Abre el enlace personal que recibiste para consultar tu invitación.';
+
+    }
+
+
+    showStatus('');
 
     return;
+
+  }
+
+
+  if (inviteName) {
+
+    inviteName.textContent =
+      'Cargando...';
+
   }
 
 
   showStatus(
-    'Cargando tu invitación…'
+    'Consultando tu invitación...'
   );
 
 
   try {
 
+
     const response =
       await fetch(
-        `${API_URL}?i=${encodeURIComponent(key)}`,
+
+        `${API_URL}?i=${encodeURIComponent(inviteCode)}`,
+
         {
+          method: 'GET',
           cache: 'no-store'
         }
+
       );
 
 
     if (!response.ok) {
 
       throw new Error(
-        'Error al consultar la invitación.'
+        'No fue posible consultar la invitación.'
       );
 
     }
@@ -202,89 +366,105 @@ async function loadInvite(rawCode) {
 
     if (!data.ok) {
 
-      activeInvite = null;
-
-      if (panel) {
-        panel.hidden = true;
-      }
-
-      showStatus(
+      throw new Error(
         data.error ||
         'Invitación no encontrada.'
       );
 
-      return;
     }
 
 
+
+    // Guardamos únicamente lo necesario
+
     activeInvite = {
 
-      code:
+      codigo:
         data.codigo,
 
-      name:
+      nombre:
         data.nombre,
 
-      capacity:
-        Number(data.cupos) || 1
+      cupos:
+        Number(data.cupos) || 1,
+
+      estado:
+        data.estado || 'Pendiente'
 
     };
 
 
-    // Guardamos código
 
-    if (code) {
+    // =================================================
+    // MOSTRAR SOLO CABEZA DE INVITACIÓN
+    // =================================================
 
-      code.value =
-        activeInvite.code;
+    if (inviteName) {
 
-    }
-
-
-    // Nombre del invitado
-
-    if (nameEl) {
-
-      nameEl.textContent =
-        activeInvite.name;
+      inviteName.textContent =
+        activeInvite.nombre;
 
     }
 
 
-    // Cupos
 
-    if (capEl) {
+    // =================================================
+    // MOSTRAR CUPOS
+    // =================================================
 
-      if (activeInvite.capacity === 1) {
+    if (inviteText) {
 
-        capEl.textContent =
-          'Tienes 1 lugar reservado.';
 
-      } else {
+      if (
+        activeInvite.cupos === 1
+      ) {
 
-        capEl.textContent =
-          `Tienen ${activeInvite.capacity} lugares reservados.`;
+        inviteText.textContent =
+          'Hemos reservado 1 lugar para esta invitación.';
+
+      }
+
+      else {
+
+        inviteText.textContent =
+          `Hemos reservado ${activeInvite.cupos} lugares para esta invitación.`;
 
       }
 
     }
 
 
-    // Selector de cantidad
 
-    if (count) {
+    // =================================================
+    // CREAR OPCIONES DE ASISTENTES
+    // =================================================
 
-      count.innerHTML = '';
+    if (guestCount) {
+
+
+      guestCount.innerHTML = '';
 
 
       for (
         let i = 1;
-        i <= activeInvite.capacity;
+        i <= activeInvite.cupos;
         i++
       ) {
 
-        count.add(
-          new Option(i, i)
+
+        const option =
+          document.createElement(
+            'option'
+          );
+
+
+        option.value = i;
+
+        option.textContent = i;
+
+
+        guestCount.appendChild(
+          option
         );
 
       }
@@ -292,11 +472,12 @@ async function loadInvite(rawCode) {
     }
 
 
+
     // Mostrar formulario
 
-    if (panel) {
+    if (rsvpForm) {
 
-      panel.hidden = false;
+      rsvpForm.hidden = false;
 
     }
 
@@ -304,7 +485,10 @@ async function loadInvite(rawCode) {
     showStatus('');
 
 
-  } catch (error) {
+  }
+
+  catch (error) {
+
 
     console.error(error);
 
@@ -312,15 +496,31 @@ async function loadInvite(rawCode) {
     activeInvite = null;
 
 
-    if (panel) {
+    if (inviteName) {
 
-      panel.hidden = true;
+      inviteName.textContent =
+        'Invitación no encontrada';
+
+    }
+
+
+    if (inviteText) {
+
+      inviteText.textContent =
+        'No pudimos consultar esta invitación.';
+
+    }
+
+
+    if (rsvpForm) {
+
+      rsvpForm.hidden = true;
 
     }
 
 
     showStatus(
-      'No pudimos cargar tu invitación. Intenta nuevamente.'
+      'Verifica que estés utilizando el enlace que recibiste.'
     );
 
   }
@@ -328,42 +528,37 @@ async function loadInvite(rawCode) {
 }
 
 
-// ==========================================
-// BOTÓN BUSCAR
-// Compatibilidad con el HTML actual
-// ==========================================
 
-if (lookup && code) {
-
-  lookup.addEventListener(
-    'click',
-    () => {
-
-      loadInvite(
-        code.value
-      );
-
-    }
-  );
-
-}
-
-
-// ==========================================
-// ASISTENCIA
-// ==========================================
+// =====================================================
+// CAMBIO DE ASISTENCIA
+// =====================================================
 
 if (
   attendance &&
-  countWrap
+  guestCountWrap
 ) {
+
 
   attendance.addEventListener(
     'change',
     () => {
 
-      countWrap.hidden =
-        attendance.value === 'no';
+
+      if (
+        attendance.value === 'yes'
+      ) {
+
+        guestCountWrap.hidden =
+          false;
+
+      }
+
+      else {
+
+        guestCountWrap.hidden =
+          true;
+
+      }
 
     }
   );
@@ -371,29 +566,35 @@ if (
 }
 
 
-// ==========================================
-// GUARDAR CONFIRMACIÓN
-// ==========================================
 
-if (form) {
+// =====================================================
+// ENVIAR RSVP
+// =====================================================
 
-  form.addEventListener(
+if (rsvpForm) {
+
+
+  rsvpForm.addEventListener(
+
     'submit',
 
     async event => {
 
+
       event.preventDefault();
+
 
 
       if (!activeInvite) {
 
         showStatus(
-          'No se ha cargado una invitación válida.'
+          'No se encontró una invitación válida.'
         );
 
         return;
 
       }
+
 
 
       if (
@@ -402,7 +603,7 @@ if (form) {
       ) {
 
         showStatus(
-          'Indícanos si podrás acompañarnos.'
+          'Selecciona si podrás acompañarnos.'
         );
 
         return;
@@ -410,18 +611,53 @@ if (form) {
       }
 
 
+
+      let cantidad = 0;
+
+
+      if (
+        attendance.value === 'yes'
+      ) {
+
+        cantidad =
+          Number(
+            guestCount.value
+          ) || 1;
+
+      }
+
+
+
+      // =================================================
+      // Apps Script actualmente espera
+      // números de personas seleccionadas.
+      //
+      // Como solo mostraremos la cabeza,
+      // enviamos 1..cantidad.
+      // =================================================
+
+      const seleccionados = [];
+
+
+      for (
+        let i = 1;
+        i <= cantidad;
+        i++
+      ) {
+
+        seleccionados.push(i);
+
+      }
+
+
+
       const payload = {
 
         codigo:
-          activeInvite.code,
+          activeInvite.codigo,
 
-        asistencia:
-          attendance.value,
-
-        confirmados:
-          attendance.value === 'yes' && count
-            ? Number(count.value)
-            : 0,
+        seleccionados:
+          seleccionados,
 
         observaciones:
           message
@@ -431,16 +667,36 @@ if (form) {
       };
 
 
+
       showStatus(
-        'Guardando tu confirmación…'
+        'Guardando tu confirmación...'
       );
+
+
+
+      const submitButton =
+        rsvpForm.querySelector(
+          'button[type="submit"]'
+        );
+
+
+      if (submitButton) {
+
+        submitButton.disabled =
+          true;
+
+      }
+
 
 
       try {
 
+
         const response =
           await fetch(
+
             API_URL,
+
             {
 
               method:
@@ -454,53 +710,89 @@ if (form) {
               },
 
               body:
-                JSON.stringify(payload)
+                JSON.stringify(
+                  payload
+                )
 
             }
+
           );
+
 
 
         if (!response.ok) {
 
           throw new Error(
-            'Error al guardar.'
+            'No fue posible guardar la confirmación.'
           );
 
         }
+
 
 
         const result =
           await response.json();
 
 
+
         if (!result.ok) {
 
           throw new Error(
             result.error ||
-            'Error al guardar.'
+            'No fue posible guardar la confirmación.'
           );
 
         }
 
+
+
+        // =================================================
+        // CONFIRMACIÓN EXITOSA
+        // =================================================
 
         if (
           attendance.value === 'yes'
         ) {
 
+
           showStatus(
-            '✓ ¡Gracias! Tu asistencia quedó confirmada.'
+
+            cantidad === 1
+
+              ? '✓ ¡Gracias! Hemos registrado 1 asistente.'
+
+              : `✓ ¡Gracias! Hemos registrado ${cantidad} asistentes.`
+
           );
 
-        } else {
+        }
+
+        else {
+
 
           showStatus(
-            '✓ Gracias por avisarnos. Hemos registrado tu respuesta.'
+            '✓ Gracias por avisarnos. Hemos registrado que no podrás acompañarnos.'
           );
 
         }
 
 
-      } catch (error) {
+
+        // Evitar doble envío accidental
+
+        if (submitButton) {
+
+          submitButton.textContent =
+            'Confirmación enviada';
+
+        }
+
+
+
+      }
+
+      catch (error) {
+
 
         console.error(error);
 
@@ -508,6 +800,14 @@ if (form) {
         showStatus(
           'No pudimos guardar tu confirmación. Intenta nuevamente.'
         );
+
+
+        if (submitButton) {
+
+          submitButton.disabled =
+            false;
+
+        }
 
       }
 
@@ -518,43 +818,9 @@ if (form) {
 }
 
 
-// ==========================================
-// ENLACE PERSONALIZADO
-// Ejemplo:
-// ?i=WD-001
-// ==========================================
 
-const urlCode =
-  new URLSearchParams(
-    window.location.search
-  ).get('i');
+// =====================================================
+// INICIAR RSVP
+// =====================================================
 
-
-if (urlCode) {
-
-  if (code) {
-
-    code.value =
-      urlCode.toUpperCase();
-
-  }
-
-
-  // Cargar automáticamente
-  loadInvite(urlCode);
-
-
-} else {
-
-  if (panel) {
-
-    panel.hidden = true;
-
-  }
-
-
-  showStatus(
-    'Abre el enlace personalizado que recibiste con tu invitación.'
-  );
-
-}
+loadInvitation();
