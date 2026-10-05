@@ -1,0 +1,559 @@
+:root{--ivory:#F8F5EC;--cream:#F3EFE2;--champagne:#F2DEB0;--sage:#A8B59A;--olive:#6F7D45;--dark:#46512F;--ink:#30342b;--muted:#6d7067;--white:#fff;--serif:'Cormorant Garamond',Georgia,serif;--sans:'Montserrat',Arial,sans-serif}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--ivory);color:var(--ink);font-family:var(--sans);font-weight:300;line-height:1.75}img{display:block;width:100%}a{color:inherit}h1,h2,h3,p{margin-top:0}h1,h2,h3{font-family:var(--serif);font-weight:500;line-height:1.02}h2{font-size:clamp(2.6rem,7vw,5rem);margin-bottom:1rem}h3{font-size:clamp(1.8rem,4vw,2.7rem);margin-bottom:.6rem}.kicker,.eyebrow,.date{font-size:.72rem;letter-spacing:.24em;font-weight:600;color:var(--olive)}.section{padding:7rem 7vw}.narrow,.section-heading{max-width:760px;margin:0 auto;text-align:center}.section-heading{margin-bottom:4rem}.button{display:inline-block;border:0;background:var(--dark);color:#fff;text-decoration:none;padding:1rem 1.5rem;border-radius:999px;font:500 .78rem var(--sans);letter-spacing:.08em;cursor:pointer;transition:.2s}.button:hover{transform:translateY(-2px);background:var(--olive)}
+.hero{height:100svh;min-height:620px;position:relative;background:url('fotos/01-portada.jpg') center 52%/cover no-repeat;color:#fff;display:grid;place-items:center}.hero-overlay{position:absolute;inset:0;background:linear-gradient(180deg,rgba(16,20,11,.18),rgba(16,20,11,.12) 45%,rgba(16,20,11,.55))}.nav{position:absolute;z-index:5;top:0;left:0;right:0;display:flex;align-items:center;justify-content:space-between;padding:1.3rem 5vw;background:linear-gradient(rgba(0,0,0,.22),transparent)}.monogram{font:600 1.6rem var(--serif);text-decoration:none}.monogram span{font-style:italic;color:var(--champagne)}.menu{display:flex;gap:1.35rem;align-items:center}.menu a{text-decoration:none;font-size:.72rem;font-weight:500}.nav-rsvp{border:1px solid rgba(255,255,255,.7);padding:.55rem .9rem;border-radius:999px}.menu-btn{display:none}.hero-content{z-index:2;text-align:center;padding:1rem}.hero h1{font-size:clamp(4rem,10vw,9rem);margin:.1em 0 .05em;text-shadow:0 3px 30px rgba(0,0,0,.25)}.hero h1 em{font-weight:400;color:var(--champagne)}.hero .eyebrow{color:#fff}.hero-date{font:500 1rem var(--sans);letter-spacing:.32em;margin-bottom:.2rem}.hero-place{font-size:.85rem;letter-spacing:.08em}.scroll-cue{display:grid;place-items:center;margin:2rem auto 0;width:42px;height:42px;border:1px solid rgba(255,255,255,.65);border-radius:50%;text-decoration:none;font-size:1.2rem}
+.welcome blockquote{font:italic 500 clamp(1.6rem,4vw,2.5rem)/1.35 var(--serif);color:var(--dark);margin:2.5rem auto;padding:2rem 0;border-top:1px solid var(--champagne);border-bottom:1px solid var(--champagne)}blockquote cite{display:block;font:600 .7rem var(--sans);letter-spacing:.16em;margin-top:1rem;color:var(--olive)}.countdown{max-width:760px;margin:4rem auto 0;display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid #d9d6c8;border-bottom:1px solid #d9d6c8}.countdown div{text-align:center;padding:1.6rem .5rem}.countdown strong{display:block;font:500 clamp(2rem,5vw,3.6rem) var(--serif);color:var(--dark)}.countdown span{font-size:.65rem;text-transform:uppercase;letter-spacing:.12em}
+.story{background:#fff}.timeline{max-width:1100px;margin:auto;display:grid;gap:5rem}.moment{display:grid;grid-template-columns:1fr 1fr;align-items:center;gap:5vw}.moment.reverse .moment-copy{order:2}.moment img{height:520px;object-fit:cover;border-radius:180px 180px 8px 8px}.moment-copy{max-width:470px}.moment-copy p{color:var(--muted)}.gallery{max-width:1100px;margin:7rem auto;display:grid;grid-template-columns:1fr 1.2fr 1fr;gap:1rem;align-items:center}.gallery img{height:420px;object-fit:cover}.gallery img:nth-child(2){height:520px}.proposal{max-width:1100px;margin:auto;background:var(--cream);display:grid;grid-template-columns:1.1fr 1fr}.proposal-photo img{height:100%;min-height:580px;object-fit:cover}.proposal-copy{padding:6vw;align-self:center}.proposal-line{font:italic 500 2.2rem var(--serif);color:var(--dark);margin:2rem 0}
+.day{background:var(--cream)}.event-card{max-width:620px;margin:auto;background:#fff;text-align:center;padding:4rem 2rem;border-radius:180px 180px 16px 16px;box-shadow:0 20px 60px rgba(70,81,47,.08)}.event-icon{font-size:2rem;color:var(--olive)}.event-card .time{font:500 2.3rem var(--serif);color:var(--dark)}.event-card hr{border:0;border-top:1px solid #ddd7c8;margin:2rem auto;width:100px}
+.location{display:grid;grid-template-columns:1.2fr 1fr;min-height:650px;background:var(--dark);color:#fff}.location-image{background:url('assets/img/mountain-moon.jpg') center 58%/cover no-repeat}.location-copy{padding:8vw;align-self:center}.location .kicker{color:var(--champagne)}.location .button{background:var(--champagne);color:var(--dark);margin-top:1rem}
+.dress-grid{max-width:720px;margin:auto;display:grid;grid-template-columns:1fr 1fr;text-align:center;gap:1rem}.dress-grid>div{padding:3rem 1rem;border:1px solid #dad6c8}.dress-symbol{font-size:2.5rem;color:var(--olive)}.reserved{text-align:center;max-width:680px;margin:3rem auto 0}.swatches{display:flex;justify-content:center;gap:.75rem;margin:1.5rem}.swatches span{width:38px;height:38px;border-radius:50%;background:var(--c);border:1px solid rgba(0,0,0,.08)}.reserved small{color:var(--muted)}
+.details{background:#fff}.detail-grid{max-width:1100px;margin:auto;display:grid;grid-template-columns:repeat(3,1fr);gap:1.2rem}.detail-grid article{padding:2.5rem;background:var(--ivory)}.detail-grid article>span{font:500 2.6rem var(--serif);color:var(--sage)}.detail-grid p{color:var(--muted)}
+.gift{min-height:580px;background:linear-gradient(rgba(35,43,25,.7),rgba(35,43,25,.72)),url('fotos/08-turin-1.jpg') center 42%/cover fixed;display:grid;place-items:center;padding:5rem 7vw;color:#fff}.gift-inner{text-align:center;max-width:650px}.gift .kicker{color:var(--champagne)}.gift .heart{font:400 3rem var(--serif);color:var(--champagne)}
+.rsvp-form{max-width:600px;margin:auto;background:#fff;padding:2.5rem;box-shadow:0 20px 70px rgba(70,81,47,.09)}label{display:block;font-size:.78rem;font-weight:500;margin:1rem 0}input,select,textarea{width:100%;margin-top:.5rem;padding:.95rem 1rem;border:1px solid #d7d4c9;background:#fff;font:400 1rem var(--sans);color:var(--ink)}.rsvp-form>.button{width:100%}.invite-panel{margin-top:1.5rem;border-top:1px solid #ddd7c8;padding-top:1rem}.invite-name{font:500 1.8rem var(--serif);color:var(--dark);margin-bottom:.1rem}.form-status{text-align:center;margin:1rem 0 0}.demo-note{max-width:600px;margin:1.2rem auto 0;text-align:center;font-size:.7rem;color:var(--muted)}footer{text-align:center;background:#2d3422;color:#fff;padding:4rem 1rem}.footer-monogram{font:500 3rem var(--serif)}footer span{color:var(--champagne);font-style:italic}footer p{font-size:.72rem;letter-spacing:.12em;margin:.3rem}
+.reveal{opacity:0;transform:translateY(24px);transition:opacity .8s ease,transform .8s ease}.reveal.visible{opacity:1;transform:none}
+@media(max-width:850px){.hero{background-image:url('fotos/01-portada.jpg')}.nav{padding:1rem 1.2rem}.menu-btn{display:block;background:rgba(248,245,236,.92);border:0;border-radius:999px;padding:.6rem .9rem;color:var(--dark);font:600 .7rem var(--sans)}.menu{display:none;position:absolute;top:70px;left:1rem;right:1rem;background:rgba(248,245,236,.97);color:var(--dark);padding:1.2rem;border-radius:14px;flex-direction:column;align-items:stretch}.menu.open{display:flex}.menu a{padding:.5rem}.nav-rsvp{text-align:center;border-color:var(--olive)}.hero{background-position:50% 46%}.hero h1{font-size:clamp(3.7rem,18vw,6rem)}.section{padding:5rem 1.3rem}.countdown div{padding:1rem .2rem}.moment,.proposal,.location{grid-template-columns:1fr}.moment.reverse .moment-copy{order:0}.moment{gap:1.6rem}.moment img{height:460px}.gallery{grid-template-columns:1fr 1fr;margin:4rem auto}.gallery img,.gallery img:nth-child(2){height:320px}.gallery img:nth-child(3){grid-column:1/-1;height:360px}.proposal-copy{padding:3rem 1.5rem}.proposal-photo img{min-height:0;height:480px}.location-image{min-height:480px}.location-copy{padding:4rem 1.5rem}.detail-grid{grid-template-columns:1fr}.gift{background-attachment:scroll}.dress-grid{gap:.6rem}.dress-grid>div{padding:2rem .5rem}.rsvp-form{padding:1.4rem}.section-heading{margin-bottom:2.5rem}}
+@media(max-width:480px){.hero{min-height:680px;background-position:50% 42%}.hero-content{padding-top:7rem}.hero-date{font-size:.82rem}.countdown span{font-size:.55rem}.moment img{height:390px}.gallery{grid-template-columns:1fr}.gallery img,.gallery img:nth-child(2),.gallery img:nth-child(3){grid-column:auto;height:380px}.dress-grid{grid-template-columns:1fr}.event-card{padding:3.2rem 1.2rem}.proposal-line{font-size:1.9rem}}
+
+/* ============================================================
+   PORTADA — AJUSTE DEFINITIVO WALTER & DAYERLIN
+   ============================================================ */
+
+.hero-names {
+    margin: .1em 0 .05em;
+    color: #FFFDF7;
+    font-family: "Cormorant Garamond", Georgia, serif;
+    font-size: clamp(4.5rem, 8vw, 7.5rem);
+    font-weight: 500;
+    line-height: .95;
+    letter-spacing: -.035em;
+    text-align: center;
+    white-space: nowrap;
+    text-shadow: 0 3px 30px rgba(0,0,0,.25);
+}
+
+/* & del nombre: limpio, pequeño y sin forma caligráfica */
+.hero-names .hero-amp {
+    display: inline-block;
+    font-family: "Montserrat", Arial, sans-serif !important;
+    font-style: normal !important;
+    font-size: .42em !important;
+    font-weight: 300 !important;
+    line-height: 1;
+    color: #F2DEB0;
+    margin: 0 .18em;
+    vertical-align: .12em;
+    letter-spacing: 0;
+}
+
+/* El logo W&D conserva su aspecto original */
+.monogram span,
+.footer-monogram span {
+    font-family: "Cormorant Garamond", Georgia, serif;
+    font-style: italic;
+    color: #F2DEB0;
+}
+
+@media (max-width: 1000px) {
+    .hero-names {
+        font-size: clamp(3.8rem, 9vw, 6rem);
+    }
+}
+
+@media (max-width: 700px) {
+    .hero-names {
+        font-size: clamp(3rem, 13vw, 4.5rem);
+        line-height: .95;
+        white-space: normal;
+    }
+
+    .hero-names .hero-amp {
+        font-size: .40em !important;
+        margin: 0 .12em;
+        vertical-align: .10em;
+    }
+}
+
+/* ============================================================
+   LOGO W & D — AMPERSAND LIMPIO
+   No modifica el ampersand del título principal.
+   ============================================================ */
+
+.monogram .logo-amp,
+.footer-monogram .logo-amp {
+    font-family: "Montserrat", Arial, sans-serif !important;
+    font-style: normal !important;
+    font-weight: 300 !important;
+    font-size: 0.58em !important;
+    line-height: 1;
+    color: #F2DEB0;
+    display: inline-block;
+    margin: 0 0.08em;
+    vertical-align: 0.12em;
+    letter-spacing: 0;
+}
+
+/* ============================================================
+   PORTADA — DISTRIBUCIÓN RESPONSIVE DEFINITIVA
+   ============================================================ */
+
+/* Escritorio / laptop */
+.hero-content {
+    width: min(94%, 1180px);
+    left: 50%;
+    top: 54%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+}
+
+.hero-content .eyebrow {
+    margin: 0 0 1.15rem;
+    font-size: clamp(1rem, 1.15vw, 1.25rem);
+    font-weight: 600;
+    letter-spacing: .28em;
+}
+
+.hero-names {
+    margin: 0;
+    font-size: clamp(4.8rem, 8vw, 7.7rem);
+}
+
+.hero-date {
+    margin: 1.25rem 0 0;
+    font-size: clamp(1.25rem, 1.55vw, 1.65rem);
+    font-weight: 500;
+    letter-spacing: .30em;
+}
+
+/* Laptop y tablet horizontal */
+@media (max-width: 1100px) {
+    .hero-content {
+        top: 55%;
+        width: 94%;
+    }
+
+    .hero-content .eyebrow {
+        font-size: 1rem;
+        margin-bottom: .9rem;
+    }
+
+    .hero-names {
+        font-size: clamp(4rem, 8.5vw, 6rem);
+    }
+
+    .hero-date {
+        margin-top: 1rem;
+        font-size: 1.2rem;
+    }
+}
+
+/* Tablet / móvil */
+@media (max-width: 700px) {
+    .hero-content {
+        width: 90%;
+        top: 61%;
+        transform: translate(-50%, -50%);
+    }
+
+    .hero-content .eyebrow {
+        margin-bottom: .75rem;
+        font-size: .92rem;
+        letter-spacing: .24em;
+    }
+
+    .hero-names {
+        font-size: clamp(3.15rem, 13vw, 4.6rem);
+        line-height: .9;
+    }
+
+    .hero-date {
+        margin-top: 1rem;
+        font-size: 1.12rem;
+        letter-spacing: .23em;
+    }
+}
+
+/* Móviles estrechos */
+@media (max-width: 430px) {
+    .hero-content {
+        top: 63%;
+        width: 92%;
+    }
+
+    .hero-content .eyebrow {
+        font-size: .82rem;
+    }
+
+    .hero-names {
+        font-size: clamp(2.8rem, 12.5vw, 3.7rem);
+    }
+
+    .hero-date {
+        font-size: 1.02rem;
+        letter-spacing: .20em;
+    }
+}
+
+/* ============================================================
+   UBICACIÓN — MAPA GOOGLE MAPS VISIBLE
+   ============================================================ */
+.location{
+    display:grid;
+    grid-template-columns:1.2fr 1fr;
+    min-height:650px;
+    background:var(--dark);
+    color:#fff;
+}
+
+.location-map{
+    min-height:650px;
+    position:relative;
+    overflow:hidden;
+    background:#d8d8cf;
+}
+
+.location-map iframe{
+    position:absolute;
+    inset:0;
+    width:100%;
+    height:100%;
+    border:0;
+    display:block;
+}
+
+.location-copy{
+    padding:8vw;
+    align-self:center;
+}
+
+.location .kicker{color:var(--champagne)}
+.location .button{background:var(--champagne);color:var(--dark);margin-top:1rem}
+
+@media(max-width:850px){
+    .location{
+        grid-template-columns:1fr;
+        min-height:0;
+    }
+
+    .location-copy{
+        order:1;
+        padding:4.5rem 1.5rem 3rem;
+    }
+
+    .location-map{
+        order:2;
+        min-height:430px;
+    }
+}
+
+@media(max-width:480px){
+    .location-map{min-height:360px}
+    .location-copy{padding:4rem 1.3rem 2.5rem}
+}
+
+/* Ubicación geográfica bajo la descripción */
+.location-area{
+    margin:.65rem 0 0;
+    color:var(--champagne);
+    font-size:.82rem;
+    font-weight:600;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+}
+
+/* ============================================================
+   REGALOS — FOTO DE FONDO CON EFECTO
+   ============================================================ */
+.gift{
+    position:relative;
+    isolation:isolate;
+    min-height:580px;
+    background:
+        linear-gradient(180deg,rgba(35,43,25,.66),rgba(35,43,25,.76)),
+        url('fotos/08-turin-1.jpg') center 42%/cover fixed no-repeat;
+    display:grid;
+    place-items:center;
+    padding:5rem 7vw;
+    color:#fff;
+    overflow:hidden;
+}
+
+.gift::after{
+    content:"";
+    position:absolute;
+    inset:0;
+    z-index:-1;
+    background:radial-gradient(circle at center,transparent 0 28%,rgba(20,27,15,.18) 75%,rgba(20,27,15,.30) 100%);
+    pointer-events:none;
+}
+
+.gift-inner{
+    position:relative;
+    z-index:1;
+    text-align:center;
+    max-width:700px;
+    text-shadow:0 2px 18px rgba(0,0,0,.24);
+}
+
+@media(max-width:850px){
+    .gift{
+        min-height:540px;
+        background:
+            linear-gradient(180deg,rgba(35,43,25,.62),rgba(35,43,25,.76)),
+            url('fotos/08-turin-1.jpg') center center/cover scroll no-repeat;
+    }
+}
+
+/* ============================================================
+   BOTÓN FLOTANTE DE MÚSICA
+   Archivo esperado: musica/cancion.mp3
+   ============================================================ */
+.music-toggle{
+    position:fixed;
+    right:1.4rem;
+    bottom:1.4rem;
+    z-index:999;
+    display:flex;
+    align-items:center;
+    gap:.55rem;
+    min-height:48px;
+    padding:.72rem 1rem;
+    border:1px solid rgba(255,255,255,.65);
+    border-radius:999px;
+    background:rgba(45,52,34,.90);
+    color:#fff;
+    box-shadow:0 10px 30px rgba(0,0,0,.20);
+    backdrop-filter:blur(10px);
+    -webkit-backdrop-filter:blur(10px);
+    cursor:pointer;
+    font:500 .72rem var(--sans);
+    letter-spacing:.08em;
+    transition:transform .2s ease, background .2s ease;
+}
+
+.music-toggle:hover{
+    transform:translateY(-2px);
+    background:rgba(70,81,47,.96);
+}
+
+.music-icon{
+    display:grid;
+    place-items:center;
+    width:26px;
+    height:26px;
+    border-radius:50%;
+    background:var(--champagne);
+    color:var(--dark);
+    font-size:1rem;
+    line-height:1;
+}
+
+.music-toggle.is-playing .music-icon{
+    animation:musicPulse 1.6s ease-in-out infinite;
+}
+
+@keyframes musicPulse{
+    0%,100%{transform:scale(1)}
+    50%{transform:scale(1.12)}
+}
+
+@media(max-width:600px){
+    .music-toggle{
+        right:1rem;
+        bottom:1rem;
+        min-height:46px;
+        padding:.65rem .78rem;
+    }
+
+    .music-label{
+        display:none;
+    }
+
+    .music-icon{
+        width:28px;
+        height:28px;
+    }
+}
+
+
+
+/* ============================================================
+   RSVP FINAL — ENLACE PERSONALIZADO
+   ============================================================ */
+.rsvp{
+    background:#f8f6ef;
+    padding-top:7rem;
+    padding-bottom:7rem;
+}
+
+.rsvp-shell{
+    width:min(1120px,88vw);
+    margin:0 auto;
+    display:grid;
+    grid-template-columns:minmax(0,.9fr) minmax(360px,1.1fr);
+    gap:clamp(3rem,7vw,7rem);
+    align-items:center;
+}
+
+.rsvp-intro{
+    max-width:470px;
+}
+
+.rsvp-intro h2{
+    margin:.45rem 0 1.25rem;
+    font-family:var(--serif);
+    font-size:clamp(3rem,5.2vw,5.5rem);
+    font-weight:400;
+    line-height:.92;
+    color:var(--dark);
+}
+
+.rsvp-intro > p:not(.kicker){
+    color:#6e7067;
+    line-height:1.85;
+}
+
+.rsvp-deadline{
+    margin-top:1.7rem;
+}
+
+.rsvp-card{
+    position:relative;
+    background:#fff;
+    border:1px solid rgba(70,81,47,.14);
+    padding:clamp(2rem,4vw,3.6rem);
+    box-shadow:0 22px 60px rgba(44,50,35,.08);
+}
+
+.rsvp-card::before{
+    content:"";
+    position:absolute;
+    inset:12px;
+    border:1px solid rgba(168,181,154,.35);
+    pointer-events:none;
+}
+
+.rsvp-card > *{
+    position:relative;
+    z-index:1;
+}
+
+.rsvp-overline{
+    margin:0 0 .75rem;
+    color:#8c9878;
+    font-size:.72rem;
+    font-weight:600;
+    letter-spacing:.22em;
+}
+
+.rsvp-card h3{
+    margin:0;
+    font-family:var(--serif);
+    font-size:clamp(2.4rem,4vw,4.2rem);
+    font-weight:400;
+    line-height:1;
+    color:var(--dark);
+}
+
+.rsvp-help{
+    margin:1.1rem 0 1.8rem;
+    color:#77796f;
+    line-height:1.7;
+}
+
+.guest-list{
+    display:grid;
+    gap:.7rem;
+    margin:1.5rem 0 2rem;
+}
+
+.guest-option{
+    display:flex;
+    align-items:center;
+    gap:.85rem;
+    padding:.95rem 1rem;
+    background:#f8f6ef;
+    border:1px solid rgba(70,81,47,.10);
+}
+
+.guest-option input{
+    width:18px;
+    height:18px;
+    accent-color:#46512f;
+}
+
+.personal-rsvp-form{
+    display:grid;
+    gap:1.25rem;
+}
+
+.rsvp-message-label{
+    display:grid;
+    gap:.55rem;
+    color:var(--dark);
+    font-size:.82rem;
+    font-weight:600;
+    letter-spacing:.04em;
+}
+
+.personal-rsvp-form textarea{
+    width:100%;
+    resize:vertical;
+    border:1px solid rgba(70,81,47,.22);
+    background:#fbfaf6;
+    padding:1rem;
+    color:var(--dark);
+    font:400 .92rem var(--sans);
+    outline:none;
+}
+
+.personal-rsvp-form textarea:focus{
+    border-color:#7d8964;
+}
+
+.form-status{
+    min-height:1.4rem;
+    margin-top:1rem;
+    color:#46512f;
+    line-height:1.5;
+}
+
+.legacy-rsvp{
+    position:absolute !important;
+    width:1px !important;
+    height:1px !important;
+    overflow:hidden !important;
+    clip:rect(0 0 0 0) !important;
+    clip-path:inset(50%) !important;
+    white-space:nowrap !important;
+}
+
+@media(max-width:850px){
+    .rsvp{
+        padding-top:5rem;
+        padding-bottom:5rem;
+    }
+
+    .rsvp-shell{
+        width:min(90vw,680px);
+        grid-template-columns:1fr;
+        gap:2.5rem;
+    }
+
+    .rsvp-intro{
+        max-width:none;
+        text-align:center;
+    }
+
+    .rsvp-card{
+        padding:2rem 1.35rem;
+    }
+}
+
+@media(max-width:520px){
+    .rsvp-intro h2{
+        font-size:3rem;
+    }
+
+    .rsvp-card h3{
+        font-size:2.65rem;
+    }
+}
