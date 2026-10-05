@@ -16,11 +16,10 @@ function tick() {
 
   const now = new Date();
 
-  let d =
-    Math.max(
-      0,
-      weddingDate - now
-    );
+  let d = Math.max(
+    0,
+    weddingDate - now
+  );
 
 
   const days =
@@ -70,12 +69,9 @@ function tick() {
         element.textContent =
           String(value)
             .padStart(2, '0');
-
       }
-
     }
   );
-
 }
 
 
@@ -120,7 +116,6 @@ if (menuBtn && menu) {
         'aria-expanded',
         open
       );
-
     }
   );
 
@@ -137,11 +132,14 @@ if (menuBtn && menu) {
             'open'
           );
 
+          menuBtn.setAttribute(
+            'aria-expanded',
+            'false'
+          );
         }
       );
 
     });
-
 }
 
 
@@ -164,17 +162,14 @@ const observer =
           entry.target
             .classList
             .add('visible');
-
         }
 
       });
-
     },
 
     {
       threshold: 0.12
     }
-
   );
 
 
@@ -249,8 +244,36 @@ const rsvpStatus =
   );
 
 
-
 let activeInvite = null;
+let editingConfirmation = false;
+
+
+
+// =====================================================
+// BOTÓN MODIFICAR
+// Lo creamos automáticamente.
+// No necesitas cambiar el HTML.
+// =====================================================
+
+const modifyButton =
+  document.createElement('button');
+
+
+modifyButton.type = 'button';
+modifyButton.className = 'button';
+modifyButton.textContent =
+  'Modificar confirmación';
+
+modifyButton.hidden = true;
+
+
+if (rsvpForm) {
+
+  rsvpForm.insertAdjacentElement(
+    'afterend',
+    modifyButton
+  );
+}
 
 
 
@@ -264,9 +287,24 @@ function showStatus(text) {
 
     rsvpStatus.textContent =
       text;
+  }
+}
 
+
+
+// =====================================================
+// BOTÓN DE ENVIAR
+// =====================================================
+
+function getSubmitButton() {
+
+  if (!rsvpForm) {
+    return null;
   }
 
+  return rsvpForm.querySelector(
+    'button[type="submit"]'
+  );
 }
 
 
@@ -291,6 +329,261 @@ const inviteCode =
 
 
 // =====================================================
+// LLENAR CANTIDAD DE ASISTENTES
+// =====================================================
+
+function fillGuestCount(
+  cupos,
+  selected = 1
+) {
+
+  if (!guestCount) {
+    return;
+  }
+
+
+  guestCount.innerHTML = '';
+
+
+  for (
+    let i = 1;
+    i <= cupos;
+    i++
+  ) {
+
+    const option =
+      document.createElement(
+        'option'
+      );
+
+
+    option.value =
+      String(i);
+
+
+    option.textContent =
+      String(i);
+
+
+    if (i === selected) {
+
+      option.selected =
+        true;
+    }
+
+
+    guestCount.appendChild(
+      option
+    );
+  }
+}
+
+
+
+// =====================================================
+// PREPARAR FORMULARIO
+// =====================================================
+
+function prepareForm(
+  attendanceValue = '',
+  confirmedCount = 0
+) {
+
+  if (!rsvpForm) {
+    return;
+  }
+
+
+  rsvpForm.hidden =
+    false;
+
+
+  modifyButton.hidden =
+    true;
+
+
+  const submitButton =
+    getSubmitButton();
+
+
+  if (submitButton) {
+
+    submitButton.disabled =
+      false;
+
+    submitButton.textContent =
+      editingConfirmation
+        ? 'Guardar cambios'
+        : 'Confirmar asistencia';
+  }
+
+
+  if (message) {
+
+    message.value =
+      activeInvite?.observaciones || '';
+  }
+
+
+  if (!attendance) {
+    return;
+  }
+
+
+  attendance.value =
+    attendanceValue;
+
+
+  if (
+    attendanceValue === 'yes'
+  ) {
+
+    if (guestCountWrap) {
+
+      guestCountWrap.hidden =
+        false;
+    }
+
+
+    fillGuestCount(
+      activeInvite.cupos,
+      confirmedCount > 0
+        ? confirmedCount
+        : 1
+    );
+  }
+
+  else {
+
+    if (guestCountWrap) {
+
+      guestCountWrap.hidden =
+        true;
+    }
+
+
+    fillGuestCount(
+      activeInvite.cupos,
+      1
+    );
+  }
+}
+
+
+
+// =====================================================
+// MOSTRAR CONFIRMACIÓN EXISTENTE
+// =====================================================
+
+function showExistingConfirmation() {
+
+  if (!activeInvite) {
+    return;
+  }
+
+
+  if (rsvpForm) {
+
+    rsvpForm.hidden =
+      true;
+  }
+
+
+  editingConfirmation =
+    false;
+
+
+  const confirmados =
+    Number(
+      activeInvite.confirmados
+    ) || 0;
+
+
+  if (confirmados > 0) {
+
+    showStatus(
+
+      confirmados === 1
+
+        ? '✓ Tu asistencia está confirmada para 1 persona.'
+
+        : `✓ Tu asistencia está confirmada para ${confirmados} personas.`
+    );
+  }
+
+  else {
+
+    showStatus(
+      '✓ Hemos registrado que no podrás acompañarnos.'
+    );
+  }
+
+
+  // Solo puede modificar mientras
+  // Apps Script indique que el RSVP está abierto.
+
+  if (
+    activeInvite.rsvpAbierto
+  ) {
+
+    modifyButton.hidden =
+      false;
+  }
+
+  else {
+
+    modifyButton.hidden =
+      true;
+
+
+    if (confirmados > 0) {
+
+      showStatus(
+
+        confirmados === 1
+
+          ? '✓ Tu asistencia está confirmada para 1 persona. El período para modificar la confirmación ha finalizado.'
+
+          : `✓ Tu asistencia está confirmada para ${confirmados} personas. El período para modificar la confirmación ha finalizado.`
+      );
+    }
+
+    else {
+
+      showStatus(
+        '✓ Hemos registrado que no podrás acompañarnos. El período para modificar la confirmación ha finalizado.'
+      );
+    }
+  }
+}
+
+
+
+// =====================================================
+// RSVP CERRADO SIN RESPUESTA
+// =====================================================
+
+function showClosedWithoutResponse() {
+
+  if (rsvpForm) {
+
+    rsvpForm.hidden =
+      true;
+  }
+
+
+  modifyButton.hidden =
+    true;
+
+
+  showStatus(
+    'El período de confirmación de asistencia ha finalizado. Gracias por tu comprensión.'
+  );
+}
+
+
+
+// =====================================================
 // CARGAR INVITACIÓN
 // =====================================================
 
@@ -303,7 +596,6 @@ async function loadInvitation() {
 
       inviteName.textContent =
         'Invitación personalizada';
-
     }
 
 
@@ -311,28 +603,56 @@ async function loadInvitation() {
 
       inviteText.textContent =
         'Abre el enlace personal que recibiste para consultar tu invitación.';
-
     }
+
+
+    if (rsvpForm) {
+
+      rsvpForm.hidden =
+        true;
+    }
+
+
+    modifyButton.hidden =
+      true;
 
 
     showStatus('');
 
     return;
-
   }
+
 
 
   if (inviteName) {
 
     inviteName.textContent =
       'Cargando...';
-
   }
+
+
+  if (inviteText) {
+
+    inviteText.textContent =
+      '';
+  }
+
+
+  if (rsvpForm) {
+
+    rsvpForm.hidden =
+      true;
+  }
+
+
+  modifyButton.hidden =
+    true;
 
 
   showStatus(
     'Consultando tu invitación...'
   );
+
 
 
   try {
@@ -341,13 +661,12 @@ async function loadInvitation() {
     const response =
       await fetch(
 
-        `${API_URL}?i=${encodeURIComponent(inviteCode)}`,
+        `${API_URL}?i=${encodeURIComponent(inviteCode)}&t=${Date.now()}`,
 
         {
           method: 'GET',
           cache: 'no-store'
         }
-
       );
 
 
@@ -356,7 +675,6 @@ async function loadInvitation() {
       throw new Error(
         'No fue posible consultar la invitación.'
       );
-
     }
 
 
@@ -370,116 +688,145 @@ async function loadInvitation() {
         data.error ||
         'Invitación no encontrada.'
       );
-
     }
 
 
 
-    // Guardamos únicamente lo necesario
+    // =================================================
+    // GUARDAR DATOS
+    // =================================================
 
     activeInvite = {
 
       codigo:
-        data.codigo,
+        String(
+          data.codigo || inviteCode
+        ),
 
       nombre:
-        data.nombre,
+        String(
+          data.nombre ||
+          'Invitado'
+        ),
 
       cupos:
-        Number(data.cupos) || 1,
+        Math.max(
+          1,
+          Number(data.cupos) || 1
+        ),
 
       estado:
-        data.estado || 'Pendiente'
+        String(
+          data.estado ||
+          'Pendiente'
+        ),
+
+      confirmados:
+        Math.max(
+          0,
+          Number(data.confirmados) || 0
+        ),
+
+      observaciones:
+        String(
+          data.observaciones || ''
+        ),
+
+      respondido:
+        data.respondido === true,
+
+      rsvpAbierto:
+        data.rsvpAbierto !== false,
+
+      fechaLimite:
+        String(
+          data.fechaLimite ||
+          '9 de diciembre de 2026'
+        )
 
     };
 
 
 
     // =================================================
-    // MOSTRAR SOLO CABEZA DE INVITACIÓN
+    // MOSTRAR SOLAMENTE CABEZA DE INVITACIÓN
     // =================================================
 
     if (inviteName) {
 
       inviteName.textContent =
         activeInvite.nombre;
-
     }
 
-
-
-    // =================================================
-    // MOSTRAR CUPOS
-    // =================================================
 
     if (inviteText) {
 
+      inviteText.textContent =
 
-      if (
         activeInvite.cupos === 1
-      ) {
 
-        inviteText.textContent =
-          'Hemos reservado 1 lugar para esta invitación.';
+          ? 'Hemos reservado 1 lugar para esta invitación.'
 
-      }
-
-      else {
-
-        inviteText.textContent =
-          `Hemos reservado ${activeInvite.cupos} lugares para esta invitación.`;
-
-      }
-
+          : `Hemos reservado ${activeInvite.cupos} lugares para esta invitación.`;
     }
 
 
 
     // =================================================
-    // CREAR OPCIONES DE ASISTENTES
+    // LLENAR SELECTOR
     // =================================================
 
-    if (guestCount) {
+    fillGuestCount(
+      activeInvite.cupos,
+      activeInvite.confirmados > 0
+        ? activeInvite.confirmados
+        : 1
+    );
 
 
-      guestCount.innerHTML = '';
 
+    // =================================================
+    // YA RESPONDIÓ
+    // =================================================
 
-      for (
-        let i = 1;
-        i <= activeInvite.cupos;
-        i++
-      ) {
+    if (
+      activeInvite.respondido
+    ) {
 
+      showExistingConfirmation();
 
-        const option =
-          document.createElement(
-            'option'
-          );
-
-
-        option.value = i;
-
-        option.textContent = i;
-
-
-        guestCount.appendChild(
-          option
-        );
-
-      }
-
+      return;
     }
 
 
 
-    // Mostrar formulario
+    // =================================================
+    // NO RESPONDIÓ Y YA CERRÓ EL RSVP
+    // =================================================
 
-    if (rsvpForm) {
+    if (
+      !activeInvite.rsvpAbierto
+    ) {
 
-      rsvpForm.hidden = false;
+      showClosedWithoutResponse();
 
+      return;
     }
+
+
+
+    // =================================================
+    // PRIMERA CONFIRMACIÓN
+    // =================================================
+
+    editingConfirmation =
+      false;
+
+
+    prepareForm(
+      '',
+      0
+    );
 
 
     showStatus('');
@@ -490,41 +837,45 @@ async function loadInvitation() {
   catch (error) {
 
 
-    console.error(error);
+    console.error(
+      'Error al cargar invitación:',
+      error
+    );
 
 
-    activeInvite = null;
+    activeInvite =
+      null;
 
 
     if (inviteName) {
 
       inviteName.textContent =
-        'Invitación no encontrada';
-
+        'No pudimos cargar tu invitación';
     }
 
 
     if (inviteText) {
 
       inviteText.textContent =
-        'No pudimos consultar esta invitación.';
-
+        'Verifica que estés utilizando el enlace personal que recibiste.';
     }
 
 
     if (rsvpForm) {
 
-      rsvpForm.hidden = true;
-
+      rsvpForm.hidden =
+        true;
     }
 
 
+    modifyButton.hidden =
+      true;
+
+
     showStatus(
-      'Verifica que estés utilizando el enlace que recibiste.'
+      'No fue posible consultar la invitación.'
     );
-
   }
-
 }
 
 
@@ -538,7 +889,6 @@ if (
   guestCountWrap
 ) {
 
-
   attendance.addEventListener(
     'change',
     () => {
@@ -551,24 +901,87 @@ if (
         guestCountWrap.hidden =
           false;
 
+
+        if (
+          guestCount &&
+          !guestCount.value
+        ) {
+
+          fillGuestCount(
+            activeInvite?.cupos || 1,
+            1
+          );
+        }
       }
 
       else {
 
         guestCountWrap.hidden =
           true;
-
       }
 
     }
   );
-
 }
 
 
 
 // =====================================================
-// ENVIAR RSVP
+// MODIFICAR CONFIRMACIÓN
+// =====================================================
+
+modifyButton.addEventListener(
+  'click',
+  () => {
+
+
+    if (
+      !activeInvite ||
+      !activeInvite.rsvpAbierto
+    ) {
+
+      return;
+    }
+
+
+    editingConfirmation =
+      true;
+
+
+    const confirmados =
+      Number(
+        activeInvite.confirmados
+      ) || 0;
+
+
+    prepareForm(
+
+      confirmados > 0
+        ? 'yes'
+        : 'no',
+
+      confirmados > 0
+        ? confirmados
+        : 1
+    );
+
+
+    showStatus(
+      'Puedes modificar tu respuesta hasta el 9 de diciembre de 2026.'
+    );
+
+
+    if (attendance) {
+
+      attendance.focus();
+    }
+  }
+);
+
+
+
+// =====================================================
+// ENVIAR / ACTUALIZAR RSVP
 // =====================================================
 
 if (rsvpForm) {
@@ -581,6 +994,10 @@ if (rsvpForm) {
     async event => {
 
 
+      // MUY IMPORTANTE:
+      // evita que la página se recargue
+      // y pierda ?i=WD-001
+
       event.preventDefault();
 
 
@@ -592,7 +1009,19 @@ if (rsvpForm) {
         );
 
         return;
+      }
 
+
+
+      if (
+        !activeInvite.rsvpAbierto
+      ) {
+
+        showStatus(
+          'El período de confirmación de asistencia ha finalizado.'
+        );
+
+        return;
       }
 
 
@@ -607,7 +1036,6 @@ if (rsvpForm) {
         );
 
         return;
-
       }
 
 
@@ -621,19 +1049,31 @@ if (rsvpForm) {
 
         cantidad =
           Number(
-            guestCount.value
+            guestCount?.value
           ) || 1;
 
+
+        if (
+          cantidad < 1 ||
+          cantidad > activeInvite.cupos
+        ) {
+
+          showStatus(
+            'Selecciona una cantidad válida de asistentes.'
+          );
+
+          return;
+        }
       }
 
 
 
       // =================================================
-      // Apps Script actualmente espera
-      // números de personas seleccionadas.
+      // APPS SCRIPT ESPERA LOS NÚMEROS
+      // DE PERSONAS SELECCIONADAS.
       //
-      // Como solo mostraremos la cabeza,
-      // enviamos 1..cantidad.
+      // No mostramos sus nombres.
+      // Enviamos 1..cantidad.
       // =================================================
 
       const seleccionados = [];
@@ -646,7 +1086,6 @@ if (rsvpForm) {
       ) {
 
         seleccionados.push(i);
-
       }
 
 
@@ -668,16 +1107,8 @@ if (rsvpForm) {
 
 
 
-      showStatus(
-        'Guardando tu confirmación...'
-      );
-
-
-
       const submitButton =
-        rsvpForm.querySelector(
-          'button[type="submit"]'
-        );
+        getSubmitButton();
 
 
       if (submitButton) {
@@ -685,7 +1116,19 @@ if (rsvpForm) {
         submitButton.disabled =
           true;
 
+
+        submitButton.textContent =
+          editingConfirmation
+            ? 'Guardando cambios...'
+            : 'Guardando...';
       }
+
+
+      showStatus(
+        editingConfirmation
+          ? 'Actualizando tu confirmación...'
+          : 'Guardando tu confirmación...'
+      );
 
 
 
@@ -698,7 +1141,6 @@ if (rsvpForm) {
             API_URL,
 
             {
-
               method:
                 'POST',
 
@@ -706,16 +1148,13 @@ if (rsvpForm) {
 
                 'Content-Type':
                   'text/plain;charset=utf-8'
-
               },
 
               body:
                 JSON.stringify(
                   payload
                 )
-
             }
-
           );
 
 
@@ -725,7 +1164,6 @@ if (rsvpForm) {
           throw new Error(
             'No fue posible guardar la confirmación.'
           );
-
         }
 
 
@@ -737,56 +1175,84 @@ if (rsvpForm) {
 
         if (!result.ok) {
 
+
+          // Apps Script también controla
+          // la fecha límite.
+
+          if (
+            result.cerrado
+          ) {
+
+            activeInvite.rsvpAbierto =
+              false;
+
+
+            showClosedWithoutResponse();
+
+            return;
+          }
+
+
           throw new Error(
             result.error ||
             'No fue posible guardar la confirmación.'
           );
-
         }
 
 
 
         // =================================================
-        // CONFIRMACIÓN EXITOSA
+        // ACTUALIZAR DATOS LOCALES
         // =================================================
 
-        if (
-          attendance.value === 'yes'
-        ) {
-
-
-          showStatus(
-
-            cantidad === 1
-
-              ? '✓ ¡Gracias! Hemos registrado 1 asistente.'
-
-              : `✓ ¡Gracias! Hemos registrado ${cantidad} asistentes.`
-
+        activeInvite.estado =
+          String(
+            result.estado ||
+            (
+              cantidad > 0
+                ? 'Confirmado'
+                : 'No asistirá'
+            )
           );
 
-        }
 
-        else {
-
-
-          showStatus(
-            '✓ Gracias por avisarnos. Hemos registrado que no podrás acompañarnos.'
+        activeInvite.confirmados =
+          Math.max(
+            0,
+            Number(
+              result.confirmados
+            ) || 0
           );
 
-        }
+
+        activeInvite.respondido =
+          true;
+
+
+        activeInvite.rsvpAbierto =
+          result.rsvpAbierto !== false;
+
+
+        activeInvite.observaciones =
+          message
+            ? message.value.trim()
+            : '';
 
 
 
-        // Evitar doble envío accidental
+        // =================================================
+        // MOSTRAR RESULTADO
+        // =================================================
 
-        if (submitButton) {
+        rsvpForm.hidden =
+          true;
 
-          submitButton.textContent =
-            'Confirmación enviada';
 
-        }
+        editingConfirmation =
+          false;
 
+
+        showExistingConfirmation();
 
 
       }
@@ -794,10 +1260,14 @@ if (rsvpForm) {
       catch (error) {
 
 
-        console.error(error);
+        console.error(
+          'Error al guardar RSVP:',
+          error
+        );
 
 
         showStatus(
+          error.message ||
           'No pudimos guardar tu confirmación. Intenta nuevamente.'
         );
 
@@ -807,14 +1277,15 @@ if (rsvpForm) {
           submitButton.disabled =
             false;
 
+
+          submitButton.textContent =
+            editingConfirmation
+              ? 'Guardar cambios'
+              : 'Confirmar asistencia';
         }
-
       }
-
     }
-
   );
-
 }
 
 
